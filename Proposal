@@ -17,3 +17,31 @@ layer on top that calls on python to interpret the market.  This application lay
 I have used the Shiny package in R to present my results.  For the sake of learning, I have explored a few libraries that are simillar 
 in Python, such as the Dash library (https://medium.com/@plotlygraphs/introducing-dash-5ecf7191b503).  I will take advantage of these to 
 apply the same foundations that I have in a new way.
+
+Analysis:
+The methods used to evaluate the future value of the currency will vary.  I have not yet decided on a particular model or type of
+model to explore.  There are other examples and explorations into predicting the value of Bitcoin, which I will likely reference to
+determine potential pitfalls.  An example of one of these is pyTrader (https://github.com/owocki/pytrader).  In this model, they lost a
+significant amount of money in transaction fees, which is something to be aware of in these models.  I will attempt to limit the number
+of transactions or search for potentially low transaction fee options.  I few things that I want to explore are Timeseries models,
+and differenet renditions on Timeseries models and certain classifiers.  There are a few libraries that I want to use for this such as
+the tsfresh library (https://github.com/blue-yonder/tsfresh), which allows for supervised classifiers to be applied to the data.
+I would like to explore VAR models, maybe looking at other currencies to help inform the model.  Some libraries for that include
+statsmodels (http://www.statsmodels.org/dev/install.html) or PyFlux(http://www.pyflux.com/vector-autoregression/).
+A third, more out of the box approach that I would like to take if I have time, so to scrub twitter or news documents for sentiment
+toward the currency.  I may attempt to do this WITH some of the other models to come to a conclusion on whether to buy or sell.
+Models will be evaluated either based on their accuracy, both in real time, and on past values.
+
+Data:
+Data will be straight forward for the currency part of this project. It can be retrieved from an API that has the trading price
+on several markets.  The site that provides this is www.cryptocompare.com.  Other information such as sentiment will likely need to be
+scraped, also requiring an API.  This is something that I have done before, and feel relatively comfortable doing it.  The size of the 
+data will likely not be extravagant, but significant.  The currecny itself has not been around that long, but the number of features
+may grow as the project moves forward.
+
+Timeline:
+Infrastructure and data gathering will be the first big hurdle and will likely take a significant amount of time to get organized
+in the way that I desire.  I will skip ahead past the UI segment to meet the needs of the class and to get an understanding of
+what I have at my disposal.  The biggest challenge will be getting familliar with a new environment in Python, but I look to put my
+head down and jump right in.  Once I have models that work and a solid data repository, I will move to the presentation layer.
+I think it is important to provide interactive results in a professional way, as this is where the true value lies in any project.
