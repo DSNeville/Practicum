@@ -1,0 +1,19 @@
+Proposal:  An exercise in Forecasting Etherium
+Author: John Neville
+Institution:  Regis University
+Phone:  (248) 703-8915
+Email:  JPNeville@gmail.com
+
+Description:
+The purposes of this exercise is to broaden my horizons in my study of data sciences by focusing on areas that
+I have not yet attempted, while applying the underlying pricples that I have studied in the past.  I will be exploring the predictive 
+capabilities of several methods in order to determine the future value of the cryptocurrency Etherium.  For this exercise I will force
+myself to explore using Python, where the majority of my study has been spent using R.  I would like to attempt constructing an UI that
+will make it easy to interact and decipher results, while providing a means to run different scenarios given the models that are in place.
+
+Presentation:
+I will use a MongoDb database to store data that is retrieved from an api hosted by the site cryptocompare.com and build an application
+layer on top that calls on python to interpret the market.  This application layer will most likley be in an html format.  In my experience,
+I have used the Shiny package in R to present my results.  For the sake of learning, I have explored a few libraries that are simillar 
+in Python, such as the Dash library (https://medium.com/@plotlygraphs/introducing-dash-5ecf7191b503).  I will take advantage of these to 
+apply the same foundations that I have in a new way.
