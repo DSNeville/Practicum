@@ -44,4 +44,17 @@ I start by going through the rythms of a time series analysis.  I used a walk th
 The next step from here is to look at other time series techniques that include other factors.
 
 
+To Do
+
+http://blog.datadive.net/selecting-good-features-part-iv-stability-selection-rfe-and-everything-side-by-side/
+Feature Selection again!
+Tune Model
+Reverse Lag (Was Backwards)
+Add TS guesses
+Compare Error
+Make Final Model for t+1
+Organize Repo
+Make Presentation
+
+
 
