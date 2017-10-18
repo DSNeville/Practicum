@@ -27,7 +27,9 @@ The datasets that I have called at this point are as follows:
 *US Unemployment
 *US Federal Fund Rate (Interest)
 *S&P 500
-*Additionally, I will soon be looking into a sentiment on related news stories.
+*BTC to USD pricing
+*GDP
+*Lagged Values from above
 
 ### Interpretation
 
@@ -37,6 +39,7 @@ The data is merged on a date field.  For measures that occur on a monthly basis,
 I begin with a few plots, but quickly realize that the scale of some of these measures is vastly different.  I scale some down by factors of ten to thousands, just to see their relative movement over time.
 
 This can be viewed in the  "Load+All+Data" notebook.
+In a section a little further along when we are looking for relationships in the data, I decided to add lagged values into the actual data set. 
 
 From this point, I need to teach myself how to use the capabilities of Python to evaluate data.
 I start by going through the rythms of a time series analysis.  I used a walk through, upating outdated functions from Analytics Vidhya.
@@ -45,16 +48,12 @@ The next step from here is to look at other time series techniques that include 
 
 
 To Do
-
-http://blog.datadive.net/selecting-good-features-part-iv-stability-selection-rfe-and-everything-side-by-side/
-Feature Selection again!
-Tune Model
-Reverse Lag (Was Backwards)
 Add TS guesses
 Compare Error
+Plot Models Compared to Actual
 Make Final Model for t+1
 Organize Repo
-Make Presentation
+Finish Presentation
 
 
 
