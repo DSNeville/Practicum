@@ -11,8 +11,6 @@ Evaluate a series of different models to determine if we can come up with a viab
  
 Learn how to perform many of the data science techniques that I have done in R, but in the Python environment.
 
-### Research
-
 
 ### Data 
 
@@ -243,7 +241,7 @@ dataset.loc[dataset['Date'] == datetime.date(2017,9,18), 'SandPValue'] = 2492.5
 df = dataset
 
 ```
-
+This can be viewed in the  "Load+All+Data" notebook.
 
 ### Interpretation
 
@@ -252,16 +250,14 @@ The data is merged on a date field.  For measures that occur on a monthly basis,
 
 I begin with a few plots, but quickly realize that the scale of some of these measures is vastly different.  I scale some down by factors of ten to thousands, just to see their relative movement over time.
 
-This can be viewed in the  "Load+All+Data" notebook.
-In a section a little further along when we are looking for relationships in the data, I decided to add lagged values into the actual data set. 
+![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/All%20Plot%20Explore.PNG)
+
+In a section a little further along when we are looking for relationships in the data, I decided to add lagged values into the actual data set, but for now we can move onto the next segment.  The data is ready for interpretation.
 
 ### Exploration
 
 I began by simply running correlation on my data, and making some plots.
 
-Plot of original data set with the first features that I evaluate:
-
-![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/All%20Plot%20Explore.PNG)
 
 Looking at the measure, I want to see how our values are distributed:
 
@@ -311,9 +307,122 @@ dataset['PrevSP3'] = dataset['SandPValue'].shift(3)
 dataset['PrevSP4'] = dataset['SandPValue'].shift(4)
 ```
 
+With the lagged variables, we take a look at a another heatmap, forgive me as it is rather large.
+
+```
+corr = dataset.corr(method='pearson')
+#corrmat = np.abs(corrmat)
+
+mask = np.zeros_like(corr, dtype=np.bool)
+mask[np.triu_indices_from(mask)] = True
 
 
+
+cmap = sns.diverging_palette(255, 10, as_cmap=True)
+
+f, ax = plt.subplots(figsize=(20, 20))
+
+sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,xticklabels = True, yticklabels = True, annot=True,
+            square=True, linewidths=.5, cbar_kws={"shrink": .5})
+ ```
+
+![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/Heatmap%20Large.PNG)
+
+
+### Timeseries Model
+
+In the timeseries evaluation, we looked at several things.  I eventually used ARIMA, but beforehand had tried using moving averages and
+log values to achieve a stationary model.
+I took advantage of the Dickey-Fuller test to see if I could achieve stationary results.  
+Below is an example or one of the plots
+
+![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/TS%20Rolling%20Avg.PNG)
+
+I then siwtched to ARIMA, using code from machinelearningmastery.com to optimize my ARIMA values.
+
+```
+from sklearn.metrics import mean_squared_error
+import warnings
+from statsmodels.tsa.arima_model import ARIMA
+
+def evaluate_arima_model(X, arima_order):
+    # prepare training dataset
+    train_size = int(len(X) * 0.66)
+    train, test = X[0:train_size], X[train_size:]
+    history = [x for x in train]
+    # make predictions
+    predictions = list()
+    for t in range(len(test)):
+        model = ARIMA(history, order=arima_order)
+        model_fit = model.fit(disp=0)
+        yhat = model_fit.forecast()[0]
+        predictions.append(yhat)
+        history.append(test[t])
+    # calculate out of sample error
+    error = mean_squared_error(test, predictions)
+    return error
+ 
+# evaluate combinations of p, d and q values for an ARIMA model
+def evaluate_models(dataset, p_values, d_values, q_values):
+    dataset = dataset.astype('float32')
+    best_score, best_cfg = float("inf"), None
+    for p in p_values:
+        for d in d_values:
+            for q in q_values:
+                order = (p,d,q)
+                try:
+                    mse = evaluate_arima_model(dataset, order)
+                    if mse < best_score:
+                        best_score, best_cfg = mse, order
+                    print('ARIMA%s MSE=%.3f' % (order,mse))
+                except:
+                    continue
+    print('Best ARIMA%s MSE=%.3f' % (best_cfg, best_score))
+ 
+# load dataset
+ts_log_moving_avg_diff = ts_log_moving_avg_diff[ts_log_moving_avg_diff.index>'2017-06-05']
+series = ts_log_moving_avg_diff
+# evaluate parameters
+p_values = [0, 1, 2, 4]
+d_values = range(0, 2)
+q_values = range(0, 6)
+warnings.filterwarnings("ignore")
+evaluate_models(series.values, p_values, d_values, q_values)
+```
+
+This gave me something to use for this model, but we will revisit it later.
+
+The other timseries model I looked at was using FBProphet.
+
+This is very simple to use:
+
+```
+import pandas as pd
+import numpy as np
+import matplotlib.pylab as plt
+from fbprophet import Prophet
+
+data = pd.read_csv('C:/Users/JP/Documents/School/Practicum/Github/Practicum/data/dataset.csv')
+#df[['ds','y']] = pd.DataFrame(data[['Date','ETHOpen']])
+#df['ds'] = pd.to_datetime(df['ds'],format='%Y-%m-%d')
+df = pd.DataFrame(data[['Date','ETHOpen']])
+df[['ds','y']] = df 
+df = df.set_index('Date')
+df = df[df.index>'2017-01-30']
+df = df[df.index<'2017-10-05']
+
+
+
+m = Prophet(weekly_seasonality = True,yearly_seasonality=True)
+m.fit(df) 
+future = m.make_future_dataframe(periods=50)
+
+forecast=m.predict(future)
+```
+
+A plot for this model:
+
+![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/Prophet%20TS.PNG)
 
 ![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/All%20Models.PNG)
 
-https://github.com/DSNeville/Practicum/blob/master/Images/All%20Models.PNG
