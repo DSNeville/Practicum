@@ -43,4 +43,6 @@ In a section a little further along when we are looking for relationships in the
 
 ### Exploration
 
+![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/All%20Models.PNG)
 
+https://github.com/DSNeville/Practicum/blob/master/Images/All%20Models.PNG
