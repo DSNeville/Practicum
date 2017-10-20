@@ -41,19 +41,6 @@ I begin with a few plots, but quickly realize that the scale of some of these me
 This can be viewed in the  "Load+All+Data" notebook.
 In a section a little further along when we are looking for relationships in the data, I decided to add lagged values into the actual data set. 
 
-From this point, I need to teach myself how to use the capabilities of Python to evaluate data.
-I start by going through the rythms of a time series analysis.  I used a walk through, upating outdated functions from Analytics Vidhya.
-(https://www.analyticsvidhya.com/blog/2016/02/time-series-forecasting-codes-python/).  For the most part this is complete, however I need to dig deeping to get some of these methods to align.
-The next step from here is to look at other time series techniques that include other factors.
-
-
-To Do
-Add TS guesses
-Compare Error
-Plot Models Compared to Actual
-Make Final Model for t+1
-Organize Repo
-Finish Presentation
-
+### Exploration
 
 
