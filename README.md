@@ -328,8 +328,17 @@ sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,xticklabels = True, yt
 
 ![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/Heatmap%20Large.PNG)
 
+With some understanding, we can start looking at the models.
 
-### Timeseries Model
+### Models:
+ * Timeseries Arima
+ * Timeseries FBProphet
+ * Linear Regression
+ * Ridge Regression
+ * Lasso Regression
+ * Mixed Models
+ 
+#### Timeseries Models
 
 In the timeseries evaluation, we looked at several things.  I eventually used ARIMA, but beforehand had tried using moving averages and
 log values to achieve a stationary model.
@@ -423,6 +432,104 @@ forecast=m.predict(future)
 A plot for this model:
 
 ![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/Prophet%20TS.PNG)
+
+#### Linear Regression/Ridge Regression/Lasso Regression
+I put all three of these together in my code for organizational purposes.  There are pages where I evaluate them individually, but
+to stay focused, let's keep them together
+I used xgb boost for linear regression, inspiried by another repository to give me a prediction using many features.
+At this point, I run this several times, having used some feature selection to get desired results, but to my surprise the
+original seemed to perform the best regardless.
+This is also true for my Ridge and Lasso regression.
+
+The code:
+
+```
+#Here we test how our models run when using the hand picked features based off the correlation matrix
+# We also consider a few features that we think still have some impact
+
+import numpy as np
+import pandas as pd
+import xgboost as xgb
+from sklearn.linear_model import Ridge
+from sklearn.linear_model import Lasso
+
+# Read in data
+data = pd.read_csv('C:/Users/JP/Documents/School/Practicum/Github/Practicum/data/dataset2.csv')
+
+df = pd.DataFrame(data)
+df['Date'] = pd.to_datetime(df['Date'],format='%Y-%m-%d')
+df = df.set_index('Date')
+df=df[df.index>'2017-05-30']
+
+# Create Train and selection features for model
+train=df[df.index<'2017-10-05']
+
+features = ['TBondsOpenValue', 'UnemploymentValue', 'BTCOpenTM1', 'BTCOpenTM2',\
+        'BTCOpenTM3', 'BTCOpenTM4', 'BTCOpenTM5', 'BTCOpenTM6', 'BTCOpenTM7','GDP','SandPValue',\
+            'ETHOpenTM1', 'ETHOpenTM2','PrevHigh','PrevHigh2','PrevHigh3','PrevHigh4','PrevLow','PrevLow2','PrevLow3',\
+            'PrevLow4','PrevVolTo','PrevVolTo2','PrevVolTo3','PrevVolTo4','PrevVolFrom','PrevVolFrom2','PrevVolFrom3',\
+            'PrevVolFrom4','PrevSP','PrevSP2','PrevSP3','PrevSP4',\
+        'ETHOpenTM3', 'ETHOpenTM4', 'ETHOpenTM5', 'ETHOpenTM6', 'ETHOpenTM7']
+
+
+train=train.dropna()
+
+#Set xgb matrix
+dtrain = xgb.DMatrix(train.loc[:, features].values, \
+                     label = train.loc[:, 'ETHOpen'].values)
+#Set xgb parameters
+params = {}
+params['booster']  = 'gbtree'
+params['objective'] = 'reg:linear'
+params['max_depth'] = 6
+params['subsample'] = 0.8
+params['colsample_bytree'] = 0.8
+params['silent'] = 1
+params['eval_metric'] = 'rmse'
+num_round = 50
+eval_list  = [(dtrain,'train')]
+
+train['Date'] = train.index.values
+
+print('Training xgb model:')
+bst = xgb.train(params, dtrain, num_round, eval_list)
+
+print('Train Ridge Regression:')
+lr = Ridge()
+lr.fit(train.loc[:, features].values, \
+       train.loc[:, 'ETHOpen'].values)
+
+print('Training Lasso Regression:')
+lassoreg = Lasso(alpha=.001,normalize=True, max_iter=1e7)
+lassoreg.fit(train.loc[:, features].values,train.loc[:, 'ETHOpen'].values)
+ 
+test1 = df[df.index>='2017-10-05']
+test1=test1.dropna()
+
+#Run Models and Forecast Values using Test values, target is ETHOpen
+while True:
+    dtest1 = xgb.DMatrix(test1[features].values)
+    xgb_pred = bst.predict(dtest1)
+    lr_pred = lr.predict(test1[features].values)
+    lasso_pred = lassoreg.predict(test1.loc[:, features].values)
+    test1['ETHOpenRidgexgb1'] = 0.2*xgb_pred+0.8*lr_pred
+    test1['ETHOpenRidge1'] = lr_pred
+    test1['ETHOpenxgb1'] = xgb_pred
+    test1['ETHOpenLasso1'] = lasso_pred
+
+
+    target = train['ETHOpen']
+    
+    done = 1
+    
+    if done:
+        print("Prediction: {}".format(test1[['ETHOpen','ETHOpenRidgexgb1','ETHOpenRidge1','ETHOpenxgb1','ETHOpenLasso1']]))
+        break
+        
+        
+   
+test1 = pd.DataFrame(test1[['ETHOpen','ETHOpenRidgexgb1','ETHOpenRidge1','ETHOpenxgb1','ETHOpenLasso1']])
+```
 
 ![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/All%20Models.PNG)
 
