@@ -553,7 +553,8 @@ I worry that there may be some sort of over fitting, but for now it seems quite 
 In the future there are a few things that I would still like to do.
 I originally planned, as you can see in my proposal, to make a web app, that could inform the purchases of these coins.
 If these predictions continue to do well, I may still do that.  Otherwise I will continue to explore using other means.
-Some things that I did not try include Elastic Net Regression, Neural Networks, Text Analytics for news and sentiment and
-of course more features.  I do not know much about markets and investing so I am sure there is still much to cover!
+Some things that I did not try include Elastic Net Regression, Neural Networks, or Text Analytics for news and sentiment.
+
+I do cover neural networks in some of my other projects.
 
 
