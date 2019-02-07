@@ -10,6 +10,7 @@ Evaluate a series of different models to determine if we can come up with a viab
 ###### Alternate Objective
  
 Learn how to perform many of the data science techniques that I have done in R, but in the Python environment.
+AKA this is my first python project.
 
 
 ### Data 
