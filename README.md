@@ -545,7 +545,7 @@ I attempted to account for the benefits in using each method to come up with a h
 
 ![alt text](https://github.com/DSNeville/Practicum/blob/master/Images/Mixed%20Model%20Performance.PNG)
 
-### Warp Up
+### Wrap Up
 
 I have gotten pretty good at predicting the price here.  I did not imagine they would be this close.
 The mixed model is the one I would go with given the least error.
@@ -553,8 +553,8 @@ I worry that there may be some sort of over fitting, but for now it seems quite 
 In the future there are a few things that I would still like to do.
 I originally planned, as you can see in my proposal, to make a web app, that could inform the purchases of these coins.
 If these predictions continue to do well, I may still do that.  Otherwise I will continue to explore using other means.
-Some things that I did not try include Elastic Net Regression, Neural Networks, or Text Analytics for news and sentiment.
+Some things that I did not try include: Elastic Net Regression, Neural Networks, or Text Analytics for news and sentiment.
 
-I do cover neural networks in some of my other projects.
+I do cover neural networks in some of my other school projects.
 
 
